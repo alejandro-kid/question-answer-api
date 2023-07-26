@@ -1,0 +1,4 @@
+connexion
+gunicorn
+jsonschema
+swagger-ui-bundle

@@ -117,3 +117,73 @@ paths:
                   message:
                     type: string
                     example: Unexpected error
+
+  /process:
+    post:
+      operationId: src.api.process.process_files
+      summary: Returns the collection name of dataset.
+      description: Read all data provided and store it in database
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                document:
+                  type: string
+                  format: binary
+      responses:
+        '200':    # status code
+          description: A JSON with health status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sucess:
+                    type: boolean
+                    example: True
+                  message:
+                    type: string
+                  collection_name:
+                    type: string
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not found
+        '406':
+          description: Not acceptable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not acceptable
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests
+        'default':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unexpected error

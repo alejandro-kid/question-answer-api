@@ -166,3 +166,5 @@ cython_debug/
 *.vsix
 
 .python-version
+
+*.bin

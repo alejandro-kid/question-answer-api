@@ -2,4 +2,5 @@ connexion
 gunicorn
 jsonschema
 swagger-ui-bundle
-chromadb
+PyMuPDF
+langchain

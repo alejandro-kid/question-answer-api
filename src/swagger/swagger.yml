@@ -134,7 +134,7 @@ paths:
                   format: binary
       responses:
         '200':    # status code
-          description: A JSON with health status
+          description: A JSON with information about upload file
           content:
             application/json:
               schema:
@@ -144,8 +144,6 @@ paths:
                     type: boolean
                     example: True
                   message:
-                    type: string
-                  collection_name:
                     type: string
         '404':
           description: Not found

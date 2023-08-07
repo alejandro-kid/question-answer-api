@@ -185,3 +185,73 @@ paths:
                   message:
                     type: string
                     example: Unexpected error
+  /answer_me/{query_text}:
+    get:
+      operationId: src.api.process.query
+      summary: Ansewr a question about upload document
+      description: Get a response based in the knowledge adquired with upload file
+      parameters:
+        - name: query_text
+          in: path
+          description: Query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: A JSON with information about upload file
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sucess:
+                    type: boolean
+                    example: True
+                  message:
+                    type: string
+                  answer:
+                    type: string
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not found
+        '406':
+          description: Not acceptable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not acceptable
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests
+        'default':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sucess:
+                    type: boolean
+                    example: True
+                  error_message:
+                    type: string
+                    example: Unexpected error

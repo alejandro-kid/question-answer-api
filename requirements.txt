@@ -4,3 +4,5 @@ jsonschema
 swagger-ui-bundle
 PyMuPDF
 langchain
+gpt4all
+faiss-cpu

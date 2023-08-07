@@ -9,7 +9,9 @@ from langchain.chains.question_answering import load_qa_chain
 def process_files(document):
     try:
         if os.listdir(get_temp_folder()):
-            os.remove(os.listdir(get_temp_folder())[0])
+            os.remove(
+                get_temp_folder() + "/" + os.listdir(get_temp_folder())[0]
+            )
 
         temp_file = os.path.join(get_temp_folder(), document.filename)
         document.save(temp_file)
@@ -32,7 +34,9 @@ def query(query_text):
 
         doc = fitz.Document()
         if os.listdir(get_temp_folder()):
-            doc.open(get_temp_folder() + "/" + os.listdir(get_temp_folder())[0])
+            doc = fitz.Document(
+                get_temp_folder() + "/" + os.listdir(get_temp_folder())[0]
+            )
         else:
             raise Exception("No document found")
 

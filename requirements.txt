@@ -6,3 +6,4 @@ PyMuPDF
 langchain
 gpt4all
 faiss-cpu
+openai

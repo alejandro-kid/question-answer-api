@@ -1,12 +1,14 @@
-import os
 import fitz
+import os
+import openai
+from openai import ChatCompletion
 from flask import Response, current_app, json
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import FAISS
 from langchain.embeddings import GPT4AllEmbeddings
 from langchain.llms import GPT4All
 from langchain.chains.question_answering import load_qa_chain
-from config.settings import LLMS_MODEL_PATH
+from config.settings import LLMS_MODEL_PATH, OPENAI_API_KEY
 
 def process_files(document):
     try:
@@ -66,6 +68,43 @@ def query_plus(query_text):
                 "success": True,
                 "message": "Query processed successfully",
                 "answer": res
+        }
+        response = Response(json.dumps(data), 200, mimetype='application/json')
+    except Exception as e:
+        data = {
+            "success": False,
+            "error_message": str(e)
+        }
+        response = Response(json.dumps(data), 500, mimetype='application/json')
+    return response
+
+def query_chatgpt(query_text):
+    try:
+
+        docs = get_similarity_search(query_text)
+        full_text = [ doc.page_content for doc in docs]
+
+        openai.api_key = OPENAI_API_KEY
+
+        systemContent = ("You are a helpful assistant.You get your knowledge from the "
+                         "following information delimited between three ticks.\n"
+                         "```{}```\n The user will ask you questions about this"
+                         " information and you should reply in a concise way. If you "
+                         "can't deduce the answer using only this provided information,"
+                         " just say you don't have the knowledge.".format(full_text))
+
+        completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": systemContent},
+            {"role": "user", "content": query_text}
+        ]
+        )
+
+        data = {
+                "success": True,
+                "message": "Query processed successfully",
+                "answer": completion.choices[0].message
         }
         response = Response(json.dumps(data), 200, mimetype='application/json')
     except Exception as e:
